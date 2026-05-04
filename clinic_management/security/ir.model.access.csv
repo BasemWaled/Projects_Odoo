@@ -1,4 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access.clinic.patient,access_clinic_patient,clinic_management.model_clinic_patient,base.group_user,1,1,1,1
-clinic_management.access_clinic_appointment,access_clinic_appointment,clinic_management.model_clinic_appointment,base.group_user,1,1,1,1
-access_medical_appointments_invoice_wizard,medical.appointments.invoice.wizard,model_medical_appointments_invoice_wizard,,1,1,1,1
