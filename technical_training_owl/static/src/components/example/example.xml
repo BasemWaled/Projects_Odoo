@@ -1,6 +1,0 @@
-<templates>
-    <t t-name="my_module.Example" owl="1">
-        <p>Hello OWL!</p>
-        <button class="btn btn-primary">Click ME</button>
-    </t>
-</templates>
