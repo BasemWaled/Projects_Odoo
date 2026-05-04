@@ -1,8 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_hospital.patient,access_hospital_patient,Hospital_Management.model_hospital_patient,base.group_user,1,1,1,1
-access_hospital.appointment,access_hospital_appointment,Hospital_Management.model_hospital_appointment,base.group_user,1,1,1,1
-access_appointment.pharmacy.lines,access_appointment_pharmacy_lines,Hospital_Management.model_appointment_pharmacy_lines,base.group_user,1,1,1,1
-access_patient.tag,access_patient_tag,Hospital_Management.model_patient_tag,base.group_user,1,1,1,1
-access_cancel.appointment.wizard,access_cancel_appointment_wizard,Hospital_Management.model_cancel_appointment_wizard,base.group_user,1,1,1,1
-access_odoo_playground,access_odoo_playground,Hospital_Management.model_odoo_playground,base.group_user,1,1,1,1
-access_hospital_operation,access_hospital_operation,Hospital_Management.model_hospital_operation,base.group_user,1,1,1,1
