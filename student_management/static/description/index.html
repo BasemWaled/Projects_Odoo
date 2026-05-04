@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Management – Odoo 18</title>
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      color: #2c3e50;
+      background: #f8f9fb;
+    }
+    a { color: #875a7b; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    img { max-width: 100%; height: auto; }
+
+    /* ─── Layout ────────────────────────────────────────────────── */
+    .wrap { max-width: 960px; margin: 0 auto; padding: 0 20px 60px; }
+
+    /* ─── Hero Banner ───────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, #875a7b 0%, #5b3560 100%);
+      color: #fff;
+      padding: 50px 40px;
+      border-radius: 0 0 12px 12px;
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+    .hero img.icon {
+      width: 90px;
+      height: 90px;
+      border-radius: 16px;
+      background: #fff;
+      padding: 8px;
+      flex-shrink: 0;
+      object-fit: contain;
+    }
+    .hero h1 { font-size: 2rem; margin-bottom: 6px; }
+    .hero p  { font-size: 1rem; opacity: .9; max-width: 600px; }
+    .badge {
+      display: inline-block;
+      background: rgba(255,255,255,.25);
+      border: 1px solid rgba(255,255,255,.4);
+      border-radius: 20px;
+      padding: 3px 12px;
+      font-size: .78rem;
+      margin-top: 10px;
+      margin-right: 6px;
+    }
+
+    /* ─── Section titles ────────────────────────────────────────── */
+    h2 {
+      font-size: 1.4rem;
+      color: #5b3560;
+      border-left: 4px solid #875a7b;
+      padding-left: 12px;
+      margin: 40px 0 16px;
+    }
+    h3 { font-size: 1.05rem; color: #5b3560; margin: 20px 0 8px; }
+
+    /* ─── Feature Grid ──────────────────────────────────────────── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      margin-top: 10px;
+    }
+    .feature-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 22px 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.07);
+      border-top: 3px solid #875a7b;
+    }
+    .feature-card .icon-big { font-size: 2rem; margin-bottom: 10px; }
+    .feature-card h3 { margin-top: 0; font-size: .95rem; }
+    .feature-card p  { font-size: .85rem; color: #666; margin: 0; }
+
+    /* ─── Steps (numbered) ──────────────────────────────────────── */
+    .steps { counter-reset: step; list-style: none; padding: 0; }
+    .steps li {
+      counter-increment: step;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      background: #fff;
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,.06);
+    }
+    .steps li::before {
+      content: counter(step);
+      min-width: 36px;
+      height: 36px;
+      background: #875a7b;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: .95rem;
+      flex-shrink: 0;
+    }
+    .steps li .text strong { display: block; margin-bottom: 4px; }
+    .steps li .text p, .steps li .text ul { font-size: .88rem; color: #555; margin: 4px 0 0; }
+    .steps li .text ul { padding-left: 18px; }
+
+    /* ─── Code / Path boxes ─────────────────────────────────────── */
+    code {
+      background: #f0ecf4;
+      color: #5b3560;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: .85em;
+      font-family: 'Courier New', monospace;
+    }
+    .note {
+      background: #fff8e1;
+      border-left: 4px solid #f0ad4e;
+      border-radius: 6px;
+      padding: 12px 16px;
+      font-size: .88rem;
+      margin: 14px 0;
+      color: #856404;
+    }
+    .tip {
+      background: #e8f5e9;
+      border-left: 4px solid #4caf50;
+      border-radius: 6px;
+      padding: 12px 16px;
+      font-size: .88rem;
+      margin: 14px 0;
+      color: #256029;
+    }
+    .danger {
+      background: #fdecea;
+      border-left: 4px solid #e53935;
+      border-radius: 6px;
+      padding: 12px 16px;
+      font-size: .88rem;
+      margin: 14px 0;
+      color: #b71c1c;
+    }
+
+    /* ─── Table ─────────────────────────────────────────────────── */
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: .88rem; }
+    th {
+      background: #875a7b;
+      color: #fff;
+      padding: 10px 14px;
+      text-align: left;
+    }
+    td { padding: 9px 14px; border-bottom: 1px solid #eee; }
+    tr:nth-child(even) td { background: #faf7fc; }
+
+    /* ─── Screenshot placeholder ────────────────────────────────── */
+    .screenshot {
+      border: 2px dashed #ccc;
+      border-radius: 10px;
+      padding: 30px;
+      text-align: center;
+      color: #aaa;
+      font-size: .85rem;
+      background: #fafafa;
+      margin: 12px 0;
+    }
+    .screenshot span { font-size: 2.5rem; display: block; margin-bottom: 6px; }
+
+    /* ─── Footer ────────────────────────────────────────────────── */
+    .footer {
+      text-align: center;
+      color: #999;
+      font-size: .82rem;
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 1px solid #e0e0e0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════
+     HERO BANNER
+═══════════════════════════════════════════════════════ -->
+<div class="hero">
+  <img class="icon"
+       src="/student_management/static/description/icon.png"
+       alt="Student Management Icon" />
+  <div>
+    <h1>Student Management</h1>
+    <p>
+      A complete educational module for Odoo 18 — manage students, teachers,
+      courses, and staff from a single, clean interface.
+    </p>
+    <span class="badge">Odoo 18</span>
+    <span class="badge">Education</span>
+    <span class="badge">v18.0.1.0.0</span>
+    <span class="badge">LGPL-3</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ═══════════════════════════════════════════════════════
+       1. FEATURES
+  ═══════════════════════════════════════════════════════ -->
+  <h2>Features</h2>
+
+  <div class="feature-grid">
+
+    <div class="feature-card">
+      <div class="icon-big">🎓</div>
+      <h3>Student Records</h3>
+      <p>
+        Full student profiles with date-of-birth validation.
+        Only ages 18–60 are accepted, enforced automatically.
+      </p>
+    </div>
+
+    <div class="feature-card">
+      <div class="icon-big">👨‍🏫</div>
+      <h3>Teacher Management</h3>
+      <p>
+        Dedicated teacher model with personal details and
+        easy linking to courses they teach.
+      </p>
+    </div>
+
+    <div class="feature-card">
+      <div class="icon-big">📚</div>
+      <h3>Course Assignments</h3>
+      <p>
+        Assign students and teachers to courses.
+        Average student age is computed automatically.
+      </p>
+    </div>
+
+    <div class="feature-card">
+      <div class="icon-big">🏢</div>
+      <h3>Staff Management</h3>
+      <p>
+        Administrative and support staff records kept
+        separate from academic personnel.
+      </p>
+    </div>
+
+    <div class="feature-card">
+      <div class="icon-big">💬</div>
+      <h3>Chatter Notifications</h3>
+      <p>
+        Automatic log messages posted to the chatter
+        whenever a student is enrolled in a course.
+      </p>
+    </div>
+
+    <div class="feature-card">
+      <div class="icon-big">🔍</div>
+      <h3>Unified Search</h3>
+      <p>
+        One wizard to search across students, teachers,
+        and staff simultaneously by keyword.
+      </p>
+    </div>
+
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       2. MODULE STRUCTURE
+  ═══════════════════════════════════════════════════════ -->
+  <h2>What Is Inside the Module?</h2>
+  <p>
+    Understanding the module's structure helps you customise or extend it later.
+    Here is what each folder and key file does:
+  </p>
+
+  <table>
+    <thead>
+      <tr><th>Path</th><th>What it does</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>__manifest__.py</code></td>
+        <td>
+          The module's identity card. Odoo reads this first.
+          It declares the name, version, dependencies (<code>base</code>, <code>mail</code>),
+          and the list of XML data files to load.
+        </td>
+      </tr>
+      <tr>
+        <td><code>__init__.py</code></td>
+        <td>
+          Tells Python that this folder is a package and
+          imports the <code>models</code> sub-package.
+        </td>
+      </tr>
+      <tr>
+        <td><code>models/student.py</code></td>
+        <td>Defines the <code>student.student</code> model with age validation.</td>
+      </tr>
+      <tr>
+        <td><code>models/teacher.py</code></td>
+        <td>Defines the <code>student.teacher</code> model.</td>
+      </tr>
+      <tr>
+        <td><code>models/course.py</code></td>
+        <td>
+          Defines <code>student.course</code> with many2many relationships
+          and a computed average-age field.
+        </td>
+      </tr>
+      <tr>
+        <td><code>models/staff.py</code></td>
+        <td>Defines the <code>student.staff</code> model.</td>
+      </tr>
+      <tr>
+        <td><code>models/base_person.py</code></td>
+        <td>Abstract base model shared by Student, Teacher, and Staff.</td>
+      </tr>
+      <tr>
+        <td><code>models/search_service.py</code></td>
+        <td>Business logic for the unified search feature.</td>
+      </tr>
+      <tr>
+        <td><code>wizard/search_wizard.py</code></td>
+        <td>Transient model (wizard) that drives the search dialog.</td>
+      </tr>
+      <tr>
+        <td><code>views/*.xml</code></td>
+        <td>Form, list, and search views for every model, plus the top-level menu.</td>
+      </tr>
+      <tr>
+        <td><code>security/ir.model.access.csv</code></td>
+        <td>Access control rules — who can read / write / create / delete each model.</td>
+      </tr>
+      <tr>
+        <td><code>static/description/</code></td>
+        <td>
+          <code>icon.png</code> shown in the Apps list; this
+          <code>index.html</code> shown as the module's description page.
+        </td>
+      </tr>
+      <tr>
+        <td><code>tests/</code></td>
+        <td>Unit tests that run with <code>--test-enable</code>.</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       3. HOW TO UPLOAD / INSTALL ON ODOO
+  ═══════════════════════════════════════════════════════ -->
+  <h2>How to Upload &amp; Install This Module on Odoo</h2>
+
+  <p>
+    Follow the steps below from start to finish.
+    Each step is explained in plain language so even a first-time Odoo user
+    can succeed.
+  </p>
+
+  <!-- ── STEP 0: pre-requisite ── -->
+  <h3>Before You Start — What You Need</h3>
+  <ul style="padding-left:20px; font-size:.9rem; color:#444;">
+    <li>A running Odoo 18 instance (local, Docker, or cloud).</li>
+    <li>Administrator access to that Odoo database.</li>
+    <li>The <strong>student_management</strong> folder (or a
+        <code>.zip</code> of it) on your computer.</li>
+  </ul>
+
+  <!-- ── METHOD A: file-system ── -->
+  <h3>Method A — Copy to the <code>addons</code> Folder (Recommended for Developers)</h3>
+
+  <ol class="steps">
+
+    <li>
+      <div class="text">
+        <strong>Locate your Odoo add-ons directory</strong>
+        <p>
+          This is the folder Odoo watches for custom modules.
+          Common paths:
+        </p>
+        <ul>
+          <li>Local install: <code>/opt/odoo/odoo18/custom_addons/</code></li>
+          <li>Docker: inside the container at the path set in
+              <code>odoo.conf</code> → <code>addons_path</code></li>
+          <li>Odoo.sh: the <code>addons/</code> folder in your git repo.</li>
+        </ul>
+      </div>
+    </li>
+
+    <li>
+      <div class="text">
+        <strong>Copy the module folder</strong>
+        <p>
+          Place the entire <code>student_management</code> folder
+          (not just its contents) inside <code>custom_addons/</code>.
+          The result should look like:
+        </p>
+        <p>
+          <code>custom_addons/student_management/__manifest__.py</code>
+        </p>
+      </div>
+    </li>
+
+    <li>
+      <div class="text">
+        <strong>Verify <code>addons_path</code> in <code>odoo.conf</code></strong>
+        <p>
+          Open <code>/etc/odoo/odoo.conf</code> (or wherever your config lives)
+          and make sure the path to <code>custom_addons</code> is listed:
+        </p>
+        <p>
+          <code>addons_path = /opt/odoo/odoo18/odoo/addons,/opt/odoo/odoo18/custom_addons</code>
+        </p>
+        <div class="note">
+          Paths are comma-separated. The custom folder must appear in this list
+          or Odoo will never see the module.
+        </div>
+      </div>
+    </li>
+
+    <li>
+      <div class="text">
+        <strong>Restart the Odoo service</strong>
+        <p>So Odoo picks up the new path:</p>
+        <p><code>sudo systemctl restart odoo</code></p>
+        <p>Or, if running manually:</p>
+        <p><code>python odoo-bin -c /etc/odoo/odoo.conf</code></p>
+      </div>
+    </li>
+
+    <li>
+      <div class="text">
+        <strong>Enable Developer Mode in Odoo</strong>
+        <p>
+          Go to <strong>Settings → General Settings → Developer Tools</strong>
+          and click <em>"Activate the developer mode"</em>.
+          This unlocks the <em>Update App List</em> button.
+        </p>
+        <div class="tip">
+          You can also enable it by adding <code>?debug=1</code>
+          to any Odoo URL in your browser.
+        </div>
+      </div>
+    </li>
+
+    <li>
+      <div class="text">
+        <strong>Update the App List</strong>
+        <p>
+          Go to <strong>Apps</strong> (top menu) →
+          click <strong>"Update App List"</strong>
+          (visible only in developer mode).
+          Confirm the dialog that appears.
+        </p>
+        <div class="screenshot">
+          <span>🖼️</span>
+          Apps menu → Update App List button
+        </div>
+      </div>
+    </li>
+
+    <li>
+      <div class="text">
+        <strong>Find and install the module</strong>
+        <p>
+          In the Apps search bar type <em>Student Management</em>.
+          Remove the "Apps" filter if the module does not appear.
+          Click <strong>Install</strong>.
+        </p>
+        <div class="screenshot">
+          <span>🖼️</span>
+          Search result card with Install button
+        </div>
+        <div class="tip">
+          Installation may take a few seconds. Odoo will reload the page
+          when it is done.
+        </div>
+      </div>
+    </li>
+
+  </ol>
+
+  <!-- ── METHOD B: ZIP upload ── -->
+  <h3>Method B — Upload a <code>.zip</code> File via the Odoo Interface</h3>
+  <p>Use this method when you cannot access the server's file system directly.</p>
+
+  <ol class="steps">
+
+    <li>
+      <div class="text">
+        <strong>Create a <code>.zip</code> archive of the module</strong>
+        <p>
+          On your computer, right-click the
+          <code>student_management</code> folder →
+          <em>Compress / Send to → Zip</em>.
+          The zip must contain the folder itself, so the structure inside is:
+        </p>
+        <p><code>student_management/__manifest__.py</code></p>
+        <div class="danger">
+          Do NOT zip the contents directly — the <code>__manifest__.py</code>
+          must NOT be at the root of the zip.
+          It must be one level deep, inside the named folder.
+        </div>
+      </div>
+    </li>
+
+    <li>
+      <div class="text">
+        <strong>Enable Developer Mode</strong>
+        <p>
+          <strong>Settings → General Settings → Developer Tools →
+          Activate the developer mode</strong>
+          (same as step 5 in Method A above).
+        </p>
+      </div>
+    </li>
+
+    <li>
+      <div class="text">
+        <strong>Open Apps and click "Upload Module"</strong>
+        <p>
+          Go to the <strong>Apps</strong> menu. In developer mode a new button
+          <strong>"Upload Module"</strong> appears in the top-left area
+          of the Apps page. Click it.
+        </p>
+        <div class="screenshot">
+          <span>🖼️</span>
+          Apps page → Upload Module button (top-left)
+        </div>
+      </div>
+    </li>
+
+    <li>
+      <div class="text">
+        <strong>Select your <code>.zip</code> file</strong>
+        <p>
+          A file-upload dialog opens. Click <em>Choose File</em>,
+          navigate to your <code>student_management.zip</code>,
+          and confirm.
+        </p>
+      </div>
+    </li>
+
+    <li>
+      <div class="text">
+        <strong>Click "Upload"</strong>
+        <p>
+          Odoo extracts the zip, copies the module to its add-ons folder,
+          and automatically refreshes the App List.
+          You will see a success message.
+        </p>
+      </div>
+    </li>
+
+    <li>
+      <div class="text">
+        <strong>Search and Install</strong>
+        <p>
+          Search for <em>Student Management</em> in the Apps list
+          and click <strong>Install</strong> — identical to Step 7 of Method A.
+        </p>
+      </div>
+    </li>
+
+  </ol>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       4. WHAT HAPPENS DURING INSTALLATION
+  ═══════════════════════════════════════════════════════ -->
+  <h2>What Happens During Installation?</h2>
+  <p>
+    When you click <strong>Install</strong>, Odoo does the following automatically
+    — you do not have to do any of this manually:
+  </p>
+
+  <table>
+    <thead>
+      <tr><th>Step</th><th>What Odoo Does</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1. Dependency check</td>
+        <td>
+          Reads <code>depends</code> in <code>__manifest__.py</code>
+          (<code>base</code>, <code>mail</code>) and installs them first
+          if not already present.
+        </td>
+      </tr>
+      <tr>
+        <td>2. Database migration</td>
+        <td>
+          Runs <code>CREATE TABLE</code> statements for every model
+          (<code>student_student</code>, <code>student_teacher</code>, etc.)
+          with all their columns.
+        </td>
+      </tr>
+      <tr>
+        <td>3. Security rules</td>
+        <td>
+          Loads <code>security/ir.model.access.csv</code> to create
+          access-control records for every group.
+        </td>
+      </tr>
+      <tr>
+        <td>4. Views &amp; menus</td>
+        <td>
+          Loads all XML files listed under <code>data</code> in the manifest:
+          form views, list views, search views, and the top-level menu items.
+        </td>
+      </tr>
+      <tr>
+        <td>5. UI refresh</td>
+        <td>
+          Odoo reloads your browser so the new
+          <strong>Student Management</strong> menu appears immediately.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       5. FIRST USE
+  ═══════════════════════════════════════════════════════ -->
+  <h2>First Use After Installation</h2>
+
+  <ol class="steps">
+
+    <li>
+      <div class="text">
+        <strong>Open the Student Management app</strong>
+        <p>
+          Click the <strong>Student Management</strong> icon on the Home screen,
+          or navigate to the top menu bar.
+          You will see a menu with entries:
+          <em>Students, Teachers, Courses, Staff, Search.</em>
+        </p>
+      </div>
+    </li>
+
+    <li>
+      <div class="text">
+        <strong>Create a Course</strong>
+        <p>
+          Go to <strong>Courses → New</strong>.
+          Give it a name (e.g. "Mathematics 101") and save.
+          A course must exist before students can be enrolled.
+        </p>
+      </div>
+    </li>
+
+    <li>
+      <div class="text">
+        <strong>Add Students</strong>
+        <p>
+          Go to <strong>Students → New</strong>.
+          Fill in name, date of birth (must result in age 18–60),
+          and assign a course.
+          Save the record — the chatter will log the enrolment automatically.
+        </p>
+      </div>
+    </li>
+
+    <li>
+      <div class="text">
+        <strong>Add Teachers and Staff</strong>
+        <p>
+          Same flow: go to <strong>Teachers → New</strong> or
+          <strong>Staff → New</strong> and fill in the details.
+        </p>
+      </div>
+    </li>
+
+    <li>
+      <div class="text">
+        <strong>Use Unified Search</strong>
+        <p>
+          Click <strong>Search</strong> in the menu, type a keyword,
+          and the wizard will return matching students, teachers, and staff
+          all in one results dialog.
+        </p>
+      </div>
+    </li>
+
+  </ol>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       6. UNINSTALL / UPGRADE
+  ═══════════════════════════════════════════════════════ -->
+  <h2>Upgrading the Module</h2>
+  <p>
+    When you release a new version:
+  </p>
+  <ol class="steps">
+    <li>
+      <div class="text">
+        <strong>Replace the folder</strong>
+        <p>
+          Copy the updated <code>student_management</code> folder
+          to your <code>custom_addons</code> directory, overwriting the old one.
+        </p>
+      </div>
+    </li>
+    <li>
+      <div class="text">
+        <strong>Restart Odoo</strong>
+        <p><code>sudo systemctl restart odoo</code></p>
+      </div>
+    </li>
+    <li>
+      <div class="text">
+        <strong>Upgrade from the Apps list</strong>
+        <p>
+          Find <em>Student Management</em> in the Apps list
+          and click the <strong>⋮ → Upgrade</strong> button.
+          Odoo will apply any new columns, views, or data files.
+        </p>
+        <div class="tip">
+          Alternatively run from the command line:<br/>
+          <code>python odoo-bin -u student_management -d &lt;your_db&gt;</code>
+        </div>
+      </div>
+    </li>
+  </ol>
+
+  <h2>Uninstalling the Module</h2>
+  <div class="danger">
+    Uninstalling deletes all data created by this module
+    (students, teachers, courses, staff) from the database.
+    Always back up your database first.
+  </div>
+  <p>
+    In the Apps list, find <em>Student Management</em> and click
+    <strong>⋮ → Uninstall</strong>. Confirm the warning dialog.
+  </p>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       7. TECHNICAL REQUIREMENTS
+  ═══════════════════════════════════════════════════════ -->
+  <h2>Technical Requirements</h2>
+  <table>
+    <thead>
+      <tr><th>Requirement</th><th>Value</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Odoo version</td><td>18.0</td></tr>
+      <tr><td>Python</td><td>3.10 +</td></tr>
+      <tr><td>Dependencies</td><td><code>base</code>, <code>mail</code></td></tr>
+      <tr><td>License</td><td>LGPL-3</td></tr>
+      <tr><td>Database</td><td>PostgreSQL (handled by Odoo)</td></tr>
+      <tr><td>External libraries</td><td>None — pure Odoo ORM</td></tr>
+    </tbody>
+  </table>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       8. AUTHOR / SUPPORT
+  ═══════════════════════════════════════════════════════ -->
+  <h2>Author &amp; Support</h2>
+  <p>
+    Developed by <strong>Basem Walid</strong>.
+    For questions, bug reports, or feature requests please open an issue
+    in the project repository or contact the author directly.
+  </p>
+
+  <div class="footer">
+    Student Management v18.0.1.0.0 &nbsp;|&nbsp; Odoo 18 &nbsp;|&nbsp; LGPL-3
+    &nbsp;|&nbsp; Author: Basem Walid
+  </div>
+
+</div><!-- /.wrap -->
+</body>
+</html>
