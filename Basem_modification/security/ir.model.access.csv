@@ -1,7 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_product_division,access_product_division,model_product_division,,1,1,1,1
-access_product_type,access_product_type,model_product_type,,1,1,1,1
-access_product_model,access_product_model,model_product_model,,1,1,1,1
-access_product_manufacturer,access_product_manufacturer,model_product_manufacturer,,1,1,1,1
-access_product_brand,access_product_brand,model_product_brand,,1,1,1,1
-access_product_country_origin,access_product_country_origin,model_product_country_origin,,1,1,1,1
