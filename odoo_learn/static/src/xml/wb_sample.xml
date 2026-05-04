@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<template>
-
-    <t t-name="WBSampleButton" owl="1">
-        <div class="control-button">
-            <i class="fa fa-superpowers" role="img" aria-labal="WB Sample Button" title="WB Sample Button"/>wb Button
-        </div>
-    </t>
-</template>
