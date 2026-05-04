@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_staff_list" model="ir.ui.view">
+        <field name="name">staff.staff.list</field>
+        <field name="model">staff.staff</field>
+        <field name="arch" type="xml">
+            <list string="Staff">
+                <field name="name"/>
+                <field name="age"/>
+                <field name="position"/>
+                <field name="salary"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_staff_form" model="ir.ui.view">
+        <field name="name">staff.staff.form</field>
+        <field name="model">staff.staff</field>
+        <field name="arch" type="xml">
+            <form string="Staff">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Staff Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Details">
+                            <field name="age"/>
+                            <field name="position"/>
+                            <field name="salary" widget="monetary"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_staff_search" model="ir.ui.view">
+        <field name="name">staff.staff.search</field>
+        <field name="model">staff.staff</field>
+        <field name="arch" type="xml">
+            <search string="Staff">
+                <field name="name" filter_domain="[('name', 'ilike', self)]"/>
+                <field name="position"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Position" name="group_position"
+                            context="{'group_by': 'position'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_staff" model="ir.actions.act_window">
+        <field name="name">Staff</field>
+        <field name="res_model">staff.staff</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_staff_search"/>
+    </record>
+
+</odoo>

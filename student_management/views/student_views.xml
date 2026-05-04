@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_student_list" model="ir.ui.view">
+        <field name="name">student.student.list</field>
+        <field name="model">student.student</field>
+        <field name="arch" type="xml">
+            <list string="Students">
+                <field name="name"/>
+                <field name="age"/>
+                <field name="date_of_birth"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_student_form" model="ir.ui.view">
+        <field name="name">student.student.form</field>
+        <field name="model">student.student</field>
+        <field name="arch" type="xml">
+            <form string="Student">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Student Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Personal Info">
+                            <field name="date_of_birth"/>
+                            <field name="age"/>
+                        </group>
+                    </group>
+                    <group string="Document">
+                        <field name="document" widget="binary" filename="document_name"/>
+                        <field name="document_name" invisible="True"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_student_search" model="ir.ui.view">
+        <field name="name">student.student.search</field>
+        <field name="model">student.student</field>
+        <field name="arch" type="xml">
+            <search string="Students">
+                <field name="name" filter_domain="[('name', 'ilike', self)]"/>
+                <filter string="Age 18–30" name="young"
+                        domain="[('age', '&gt;=', 18), ('age', '&lt;=', 30)]"/>
+                <filter string="Age 31–60" name="senior"
+                        domain="[('age', '&gt;=', 31), ('age', '&lt;=', 60)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_student" model="ir.actions.act_window">
+        <field name="name">Students</field>
+        <field name="res_model">student.student</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_student_search"/>
+    </record>
+
+</odoo>

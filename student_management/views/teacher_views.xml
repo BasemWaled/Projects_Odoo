@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_teacher_list" model="ir.ui.view">
+        <field name="name">teacher.teacher.list</field>
+        <field name="model">teacher.teacher</field>
+        <field name="arch" type="xml">
+            <list string="Teachers">
+                <field name="name"/>
+                <field name="age"/>
+                <field name="subject"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_teacher_form" model="ir.ui.view">
+        <field name="name">teacher.teacher.form</field>
+        <field name="model">teacher.teacher</field>
+        <field name="arch" type="xml">
+            <form string="Teacher">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Teacher Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Details">
+                            <field name="age"/>
+                            <field name="subject"/>
+                            <field name="user_id"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_teacher_search" model="ir.ui.view">
+        <field name="name">teacher.teacher.search</field>
+        <field name="model">teacher.teacher</field>
+        <field name="arch" type="xml">
+            <search string="Teachers">
+                <field name="name" filter_domain="[('name', 'ilike', self)]"/>
+                <field name="subject"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_teacher" model="ir.actions.act_window">
+        <field name="name">Teachers</field>
+        <field name="res_model">teacher.teacher</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_teacher_search"/>
+    </record>
+
+</odoo>

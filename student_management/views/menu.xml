@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem
+            id="menu_student_management_root"
+            name="Student Management"
+            sequence="50"
+            web_icon="student_management,static/description/icon.png"/>
+
+
+    <menuitem
+            id="menu_student"
+            name="Students"
+            parent="menu_student_management_root"
+            action="action_student"
+            sequence="10"/>
+
+    <menuitem
+            id="menu_course"
+            name="Courses"
+            parent="menu_student_management_root"
+            action="action_course"
+            sequence="40"/>
+
+
+    <menuitem
+            id="menu_teacher"
+            name="Teachers"
+            parent="menu_student_management_root"
+            action="action_teacher"
+            sequence="20"/>
+
+    <menuitem
+            id="menu_staff"
+            name="Staff"
+            parent="menu_student_management_root"
+            action="action_staff"
+            sequence="50"/>
+
+    <menuitem
+            id="menu_public_search"
+            name="Public Search"
+            parent="menu_student_management_root"
+            action="action_student_search_wizard"
+            sequence="90"/>
+
+</odoo>

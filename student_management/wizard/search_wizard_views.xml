@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_student_search_wizard_form" model="ir.ui.view">
+        <field name="name">student.search.wizard.form</field>
+        <field name="model">student.search.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Public Search">
+                <group string="Search">
+                    <field name="name" placeholder="Enter a name (leave blank for all)..."/>
+                </group>
+                <group string="Search In">
+                    <field name="is_student"/>
+                    <field name="is_teacher"/>
+                    <field name="is_staff"/>
+                </group>
+                <notebook>
+                    <page string="Results"
+                          invisible="not result_ids">
+                        <field name="result_ids" readonly="1" nolabel="1">
+                            <list create="false" edit="false" delete="false">
+                                <field name="name"/>
+                                <field name="record_type" string="Type"/>
+                            </list>
+                        </field>
+                    </page>
+                </notebook>
+                <footer>
+                    <button name="action_search" type="object"
+                            string="Search" class="btn-primary"/>
+                    <button string="Close" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action that opens the wizard as a modal popup -->
+    <record id="action_student_search_wizard" model="ir.actions.act_window">
+        <field name="name">Public Search</field>
+        <field name="res_model">student.search.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>
